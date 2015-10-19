@@ -37,9 +37,17 @@ class Config{
 		$config = include_once $file;
 		$path = pathinfo($file);
 		if(is_array($config)){
-			$this->loadArray($config,$path['filename'];
+			$this->loadArray($config,$path['filename']);
 		}else{
 			$this->setConfig($path['filename'], $config);
 		}
+	}
+
+	public function getAll(){
+		return $this->container;
+	}
+
+	public function all(){
+		return $this->getAll();
 	}
 }
