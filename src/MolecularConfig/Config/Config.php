@@ -25,7 +25,7 @@ class Config{
 	}
 
 	public function loadArray($array,$prefix = ''){
-		if(!is_array($array)) throw new Exception("The config value is a not array", 1);
+		if(!is_array($array)) throw new \Exception("The config value is a not array", 1);
 
 		foreach ($array as $key => $value) {
 			$this->setConfig(($prefix != ''?$prefix.'.' : ''). $key,$value);
@@ -33,7 +33,7 @@ class Config{
 	}
 
 	public function loadFile($file){
-		if(!file_exists($file)) throw new Exception("The config value is not a file", 1);
+		if(!file_exists($file)) throw new \Exception("The config value is not a file", 1);
 		$config = include_once $file;
 		$path = pathinfo($file);
 		if(is_array($config)){
