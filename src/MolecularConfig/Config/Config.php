@@ -4,8 +4,11 @@ class Config{
 	
 	private $container;
 
-	public function _contruct(){
+	private $exceptionDir;
+
+	public function __construct(){
 		$this->container = [];
+		$this->exceptionDir = [".",".."];
 	}
 
 	public function setConfig($config,$value = null){
@@ -32,15 +35,26 @@ class Config{
 		}
 	}
 
-	public function loadFile($file){
+	public function loadFile($file,$prefix = null){
 		if(!file_exists($file)) throw new \Exception("The config value is not a file", 1);
 		$config = include_once $file;
 		$path = pathinfo($file);
+		$prefix = !empty($prefix)? $prefix.".".$path['filename'] : $path['filename'];
 		if(is_array($config)){
-			$this->loadArray($config,$path['filename']);
+			$this->loadArray($config,$prefix);
 		}else{
-			$this->setConfig($path['filename'], $config);
+			$this->setConfig($prefix, $config);
 		}
+	}
+
+	public function loadFolder($folder,$prefix = ''){
+		$files = scandir($folder);
+		foreach ($files as $file) {
+			if(in_array($file, $this->exceptionDir)) continue;
+			$filePath = $folder.DIRECTORY_SEPARATOR.$file;
+			if(is_file($filePath))$this->loadFile($filePath,$prefix);
+			if(is_dir($filePath))$this->loadFolder($filePath,$file.$prefix);
+		}	
 	}
 
 	public function getAll(){
