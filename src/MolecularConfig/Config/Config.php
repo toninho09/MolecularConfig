@@ -15,8 +15,8 @@ class Config{
 		$this->container[$config] = $value;
 	}
 
-	public function getConfig($config){
-		return $this->container[$config];
+	public function getConfig($config,,$default = ""){
+		return isset($this->container[$config])?$this->container[$config] : $default;
 	}
 
 	public function get($config){
